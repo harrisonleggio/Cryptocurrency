@@ -8,8 +8,8 @@ from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email.encoders import encode_base64
 
-to_address = '9144737958@mms.att.net'
-from_address = 'harrisonleggio@my.uri.edu'
+to_address = ''
+from_address = ''
 
 
 def get_prices():
@@ -47,7 +47,7 @@ def get_prices():
     s = smtplib.SMTP('smtp.gmail.com', 587)
     s.ehlo()
     s.starttls()
-    s.login('harrisonleggio@my.uri.edu', 'googleplex123')
+    s.login('', '')
     s.sendmail(from_address, to_address, mail.as_string())
     s.quit()
     print 'Email sent'
