@@ -61,7 +61,7 @@ def check_fills(data):
     for i in new_fills:
         text_body.append('{}: {} LTC at {}\nTotal:{}'.format(str(i['side']), str(i['size']), str(i['price']), str(float(i['size']) * float(i['price']))))
 
-    to_address = '9144737958@mms.att.net'
+    to_address = '<sms email address>'
     from_address = 'LTC Update'
 
     mail = MIMEMultipart()
