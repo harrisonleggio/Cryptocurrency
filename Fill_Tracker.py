@@ -5,10 +5,9 @@ from email.mime.text import MIMEText
 
 
 def authenticate():
-
-    api_key = '<api key>'
-    secret_key = '<secret key>'
-    passphrase = '<passphrase>'
+    api_key = '123456789123456789'
+    secret_key = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX=='
+    passphrase = 'cointradealerts'
     api_url = 'https://api.gdax.com/fills'
 
     timestamp = str(time.time())
@@ -19,12 +18,12 @@ def authenticate():
     signature_b64 = signature.digest().encode('base64').rstrip('\n')
 
     headers = {
-                'CB-ACCESS-SIGN': signature_b64,
-                'CB-ACCESS-TIMESTAMP': timestamp,
-                'CB-ACCESS-KEY': api_key,
-                'CB-ACCESS-PASSPHRASE': passphrase,
-                'Content-Type': 'application/json'
-                }
+        'CB-ACCESS-SIGN': signature_b64,
+        'CB-ACCESS-TIMESTAMP': timestamp,
+        'CB-ACCESS-KEY': api_key,
+        'CB-ACCESS-PASSPHRASE': passphrase,
+        'Content-Type': 'application/json'
+    }
 
     r = requests.get(api_url, headers=headers)
     return r.json()
@@ -49,23 +48,23 @@ def check_fills(data):
     print 'Your most recent order has filled'
 
     new_fills = []
- 
+
     if delta == 1:
         new_fills.append(data[0])
     else:
         for i in range(0, delta):
             new_fills.append(data[i])
-   
+
     text_body = []
 
     for i in new_fills:
-        text_body.append('{}: {} LTC at {}\nTotal:{}'.format(str(i['side']), str(i['size']), str(i['price']), str(float(i['size']) * float(i['price']))))
+        text_body.append('{}: {} {} at {} Total:{}'.format(str(i['side']), str(i['size']), str(i['product_id'].split('-')[0]), str(i['price']), str(float(i['size']) * float(i['price']))))
 
-    to_address = '<sms email address>'
-    from_address = 'LTC Update'
+    to_address = '1234567890@txt.att.net'
+    from_address = 'Coin Update'
 
     mail = MIMEMultipart()
-    mail['Subject'] = 'LTC Update'
+    mail['Subject'] = 'Coin Update'
     mail['From'] = from_address
     mail['To'] = to_address
     mail.attach(MIMEText('\n'.join(text_body)))
@@ -73,9 +72,10 @@ def check_fills(data):
     s = smtplib.SMTP('smtp.gmail.com', 587)
     s.ehlo()
     s.starttls()
-    s.login('<sending gmail>', '<sending password>')
+    s.login('yourgmail@gmail.com', 'yourgmailpassword')
     s.sendmail(from_address, to_address, mail.as_string())
     s.quit()
+
 
 if __name__ == '__main__':
     data = authenticate()
